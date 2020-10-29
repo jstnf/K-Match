@@ -1,30 +1,38 @@
- > As you complete each section you **must** remove the prompt text. Every *turnin* of this project includes points for formatting of this README so keep it clean and keep it up to date. 
- > Prompt text is any lines beginning with "\<"
- > Replace anything between \<...\> with your project specifics and remove angle brackets. For example, you need to name your project and replace the header right below this line with that title (no angle brackets). 
-# \<Project title\>
+# K-Match
  > Your author list below should include links to all members GitHub and should begin with a "\<" (remove existing author).
  
- > Authors: \<[Jeffrey McDaniel](https://github.com/jmcda001)\>
+ > Authors: \<[Andy Tran](https://github.com/ATranZone) [Justin Figueroa](https://github.com/jstnf) [Nathan Nguyen](https://github.com/nateknguyen)\> 
  
- > You will be forming a group of **THREE** students and work on an interesting project that you will propose yourself (in this `README.md` document). You can pick any project that you'd like, but it needs ot implement three design patterns. Each of the members in a group is expected to work on at least one design pattern and its test cases. You can, of course, help each other, but it needs to be clear who will be responsible for which pattern and for which general project features.
+ > You will be forming a group of **THREE** students and work on an interesting project that you will propose yourself (in this `README.md` document). You can pick any project that you'd like, but it needs to implement three design patterns. Each of the members in a group is expected to work on at least one design pattern and its test cases. You can, of course, help each other, but it needs to be clear who will be responsible for which pattern and for which general project features.
  
  > ## Expectations
  > * Incorporate **three** distinct design patterns, *two* of the design patterns need to be taught in this course:
- >   * Composite, Strategy, Abstract Factory, Visitor
+ >   * Composite, Strategy, Abstract Factory, Visitor1
  > * All three design patterns need to be linked together (it can't be three distinct projects)
- > * Your project should be implemented in C/C++. If you wish to choose anoher programming language (e.g. Java, Python), please discuss with your lab TA to obtain permission.
+ > * Your project should be implemented in C/C++. If you wish to choose another programming language (e.g. Java, Python), please discuss with your lab TA to obtain permission.
  > * You can incorporate additional technologies/tools but they must be approved (in writing) by the instructor or the TA.
  > * Each member of the group **must** be committing code regularly and make sure their code is correctly attributed to them. We will be checking attributions to determine if there was equal contribution to the project.
 
 ## Project Description
  > Your project description should summarize the project you are proposing. Be sure to include
  > * Why is it important or interesting to you?
+  >   * All three of us have an interest in listening to K-pop which is Korean pop music. We wanted to create an application that would help new listeners discover Korean artists that are similar to their music taste.
  > * What languages/tools/technologies do you plan to use? (This list may change over the course of the project)
- >   * [toolname](link) - Short description
+ >   * [Microsoft Visual Studio Code](https://code.visualstudio.com/) - IDE for C++ and JavaScript
+ >   *  C++ - for backend
+ >   * JavaScript - for GUI(frontend)
+ >   * MYSQL - for database management 
  > * What will be the input/output of your project?
+ >   * The application takes in user submitted artists and genres that you like then recommends Korean pop music artists based off of the user inputted songs 
  > * What are the three design patterns you will be using. For each design pattern you must:
  >   * Explain in 3 - 5 sentences why you picked this pattern and what feature you will implement with it
- > * This description should be in enough detail that the TA/instructor can determine the complexity of the project and if it is sufficient for the team members to complete in the time allotted. 
+ >   * 1) Strategy
+	 >   a) We chose the strategy design pattern to have our clients not  know specifically how our C++ code would communicate with our database of recommended songs. The feature that we can implement with this design pattern allows us to establish relationships between songs even if the user does not know specific details about the songs that they provide to our program. Strategy allows the use of a context related request from a client to the proper algorithm to recommend similar songs to what the user has inputted. 
+ >   * 2) Composite
+	 >   a) We chose the composite design pattern to have a song group as our main composite which will then contain leaves and other song groups that can hold more precise information of the recommended songs. Subclasses of the song group can contain information like the band name, release year, and even song length to the user. We will a have a client that can manipulate objects through the interface.
+ >   * 3) Chain of Responsibility
+	 >   a) We chose chain of responsibility design pattern to have the user's input be received by the correct object to perform the correct actions on their input. This would allow our user interface to have buttons presented to the user then depending on which button is pressed can be passed on to the correct receiver to deal with user's request. This design pattern simplifies the objects interconnections to one another by having objects only have a single reference to their succeeding receiver. 
+ 
 
  > ## Phase II
  > In addition to completing the "Class Diagram" section below, you will need to 
