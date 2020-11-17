@@ -15,7 +15,7 @@
    * The frontend of the project (GUI)
    * Display user and song information to the user of the application
    * Contains buttons and elements that perform actions in the backend
- * MySQL
+ * **MySQL** (or other database, such as flatfile)
    * Stores all user information, including user's song lists, relationships between songs (we use these to create recommendations), and more
    * Contains songs grabbed from *Spotify* using Spotify's HTTP API
 
