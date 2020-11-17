@@ -1,5 +1,5 @@
 # K-Match
- > Authors: \<[Andy Tran](https://github.com/ATranZone) [Justin Figueroa](https://github.com/jstnf) [Nathan Nguyen](https://github.com/nateknguyen)\> 
+**Authors:** [Andy Tran](https://github.com/ATranZone), [Justin Figueroa](https://github.com/jstnf), [Nathan Nguyen](https://github.com/nateknguyen) 
 
 ## Project Description
 ### Purpose
@@ -27,11 +27,11 @@ Using this information, users can create their own accounts on our application, 
 Our application will include three main displays - **search** for music in our database, **view user information** such as saved song and artist lists, and a **question-and-answer recommendation** page where users are asked questions in order to further recommend them new songs to listen to.
 
 ### Design Patterns
- * 1) **Strategy** -
+ 1) **Strategy** -
 	   We chose the strategy design pattern to have our clients not  know specifically how our C++ code would communicate with our database of recommended songs. The feature that we can implement with this design pattern allows us to establish relationships between songs even if the user does not know specific details about the songs that they provide to our program. Strategy allows the use of a context related request from a client to the proper algorithm to recommend similar songs to what the user has inputted. 
- * 2) **Composite** -
+ 2) **Composite** -
 	     We chose the composite design pattern to have a song group as our main composite which will then contain leaves and other song groups that can hold more precise information of the recommended songs. Subclasses of the song group can contain information like the band name, release year, and even song length to the user. We will a have a client that can manipulate objects through the interface.
- * 3) **Chain of Responsibility** -
+ 3) **Chain of Responsibility** -
 	    We chose chain of responsibility design pattern to have the user's input be received by the correct object to perform the correct actions on their input. This would allow our user interface to have buttons presented to the user then depending on which button is pressed can be passed on to the correct receiver to deal with user's request. This design pattern simplifies the objects interconnections to one another by having objects only have a single reference to their succeeding receiver. 
  
 
