@@ -4,16 +4,23 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 
 class Song 
 {
-    public:
-        Song() {};
-        string getSongName(void);
-        string SongName;
-        string SongArtist;
-        string Song
-
     private:
-        void setSongName();
+        string songName;
+        string songArtist;
+        string songGenre;
+        int songLength;
+
+    public:
+        void setSongName(string sName);
+        void setSongArtist(string sArtist);
+        void setSongGenre(string sGenre);
+        void setSongLength(int sLength);
+
 }
+
+#endif
