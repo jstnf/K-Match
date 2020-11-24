@@ -26,4 +26,7 @@ void mainMenu::getInput(){
     this->choice = input;
 }
 
+char mainMenu::getRequest(){
+    return choice;
+}
 #endif
