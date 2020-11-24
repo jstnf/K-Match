@@ -9,7 +9,6 @@ class mainMenu {
     private: 
         char choice;
     public:
-        char input;
         void display();
         void getInput();
         char getRequest();
