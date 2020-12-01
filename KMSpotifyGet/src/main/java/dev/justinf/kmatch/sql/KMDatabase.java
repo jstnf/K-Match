@@ -20,6 +20,8 @@ public class KMDatabase {
     public static final String ARTIST_TABLE = "artists";
     public static final String ALBUM_TABLE = "albums";
     public static final String SONG_TABLE = "songs";
+    public static final String ALBUM_ARTIST_TABLE = "album_artists";
+    public static final String SONG_ARTIST_TABLE = "song_artists";
 
     private final KMSpotifyGet sg;
 
@@ -70,9 +72,11 @@ public class KMDatabase {
         createArtistTable();
         createAlbumTable();
         createSongTable();
+        createAlbumArtistTable();
+        createSongArtistTable();
     }
 
-    public void processTrack(Track track) {
+    public void printTrack(Track track) {
         System.out.println(track.getName());
         System.out.print(" - Artists: ");
         System.out.println(Arrays.asList(track.getArtists()).stream().map(ArtistSimplified::getName).collect(Collectors.joining(", ")));
@@ -85,7 +89,7 @@ public class KMDatabase {
     private void createArtistTable() throws SQLException {
         PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + ARTIST_TABLE + "` (" +
                 "`id` VARCHAR(22) NOT NULL DEFAULT '', " +
-                "`name` VARCHAR(100) NOT NULL DEFAULT '', " +
+                "`name` VARCHAR(128) NOT NULL DEFAULT '', " +
                 "PRIMARY KEY (`id`));");
         ps.executeUpdate();
 
@@ -97,10 +101,8 @@ public class KMDatabase {
     private void createAlbumTable() throws SQLException {
         PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + ALBUM_TABLE + "` (" +
                 "`id` VARCHAR(22) NOT NULL DEFAULT '', " +
-                "`artist` VARCHAR(22) NOT NULL DEFAULT '', " +
-                "`name` VARCHAR(100) NOT NULL DEFAULT '', " +
-                "PRIMARY KEY (`id`), " +
-                "FOREIGN KEY (`artist`) REFERENCES " + ARTIST_TABLE + "(`id`));");
+                "`name` VARCHAR(128) NOT NULL DEFAULT '', " +
+                "PRIMARY KEY (`id`));");
         ps.executeUpdate();
 
         // If table already exists, remove all entries
@@ -111,19 +113,47 @@ public class KMDatabase {
     private void createSongTable() throws SQLException {
         PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + SONG_TABLE + "` (" +
                 "`id` VARCHAR(22) NOT NULL DEFAULT '', " +
-                "`name` VARCHAR(100) NOT NULL DEFAULT '', " +
-                "`artist` VARCHAR(22) NOT NULL DEFAULT '', " +
-                "`album` VARCHAR(22) NOT NULL DEFAULT '', " +
+                "`name` VARCHAR(128) NOT NULL DEFAULT '', " +
+                "`albumId` VARCHAR(22) NOT NULL DEFAULT '', " +
                 "`duration` BIGINT NOT NULL DEFAULT 0, " +
                 "`release` DATE NOT NULL, " +
                 "`popularity` INT NOT NULL DEFAULT 0, " +
                 "PRIMARY KEY (`id`), " +
-                "FOREIGN KEY (`artist`) REFERENCES " + ARTIST_TABLE + " (`id`), " +
-                "FOREIGN KEY (`album`) REFERENCES " + ALBUM_TABLE + " (`id`));");
+                "FOREIGN KEY (`albumId`) REFERENCES " + ALBUM_TABLE + " (`id`));");
         ps.executeUpdate();
 
         // If table already exists, remove all entries
         ps = connection.prepareStatement("DELETE FROM `" + SONG_TABLE + "` WHERE 1 = 1;");
+        ps.executeUpdate();
+    }
+
+    private void createAlbumArtistTable() throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + ALBUM_ARTIST_TABLE + "` (" +
+                "`id` INT NOT NULL AUTO_INCREMENT, " +
+                "`albumId` VARCHAR(22) NOT NULL DEFAULT '', " +
+                "`artistId` VARCHAR(22) NOT NULL DEFAULT '', " +
+                "PRIMARY KEY (`id`)," +
+                "FOREIGN KEY (`albumId`) REFERENCES " + ALBUM_TABLE + "(`id`), " +
+                "FOREIGN KEY (`artistId`) REFERENCES " + ARTIST_TABLE + "(`id`));");
+        ps.executeUpdate();
+
+        // If table already exists, remove all entries
+        ps = connection.prepareStatement("DELETE FROM `" + ALBUM_ARTIST_TABLE + "` WHERE 1 = 1;");
+        ps.executeUpdate();
+    }
+
+    private void createSongArtistTable() throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + SONG_ARTIST_TABLE + "` (" +
+                "`id` INT NOT NULL AUTO_INCREMENT, " +
+                "`songId` VARCHAR(22) NOT NULL DEFAULT '', " +
+                "`artistId` VARCHAR(22) NOT NULL DEFAULT '', " +
+                "PRIMARY KEY (`id`)," +
+                "FOREIGN KEY (`songId`) REFERENCES " + SONG_TABLE + "(`id`), " +
+                "FOREIGN KEY (`artistId`) REFERENCES " + ARTIST_TABLE + "(`id`));");
+        ps.executeUpdate();
+
+        // If table already exists, remove all entries
+        ps = connection.prepareStatement("DELETE FROM `" + SONG_ARTIST_TABLE + "` WHERE 1 = 1;");
         ps.executeUpdate();
     }
 
