@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.Driver;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.Track;
 import dev.justinf.kmatch.KMSpotifyGet;
+import dev.justinf.kmatch.utils.StringUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -76,7 +77,8 @@ public class KMDatabase {
         System.out.print(" - Artists: ");
         System.out.println(Arrays.asList(track.getArtists()).stream().map(ArtistSimplified::getName).collect(Collectors.joining(", ")));
         System.out.println(" - Album: " + track.getAlbum().getName());
-        System.out.println(" - Duration: " + track.getDurationMs() + "ms");
+        System.out.println(" - Release: " + track.getAlbum().getReleaseDate());
+        System.out.println(" - Duration: " + StringUtils.convertMillisToTime(track.getDurationMs()));
         System.out.println(" - Popularity (0-100): " + track.getPopularity());
     }
 

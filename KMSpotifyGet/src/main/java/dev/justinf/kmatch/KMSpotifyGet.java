@@ -1,6 +1,9 @@
 package dev.justinf.kmatch;
 
+import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.model_objects.specification.Track;
 import dev.justinf.kmatch.spotify.SpotifyAPI;
 import dev.justinf.kmatch.sql.KMDatabase;
 
@@ -57,11 +60,11 @@ public class KMSpotifyGet {
         try {
             System.out.println("\nBeginning process in 5 seconds...");
             Thread.sleep(5000);
-            connectDatabase();
+            connectAndAuthenticate();
         } catch (Exception ignored) { }
     }
 
-    private void connectDatabase() {
+    private void connectAndAuthenticate() {
         System.out.println("Attempting connection to SQL database...");
         if (database.init()) {
             System.out.println("Successfully connected to SQL database!");
@@ -134,6 +137,8 @@ public class KMSpotifyGet {
         System.out.println("Successfully obtained Spotify authentication token.");
         System.out.println("Proceeding to scrape entries and write to database...");
 
+        String lastId = "";
+
         System.out.println("Staging playlists:");
         for (String id : api.getPlaylistIds()) {
             System.out.println("Requesting playlist information for playlist id " + id + "...");
@@ -145,7 +150,16 @@ public class KMSpotifyGet {
                 System.out.println(" - " + playlist.getId());
                 System.out.println(" - \"" + playlist.getName() + "\"");
                 System.out.println(" - " + playlist.getTracks().getTotal() + " songs (expected)");
+
+                lastId = id;
             }
+        }
+
+        System.out.println("\nPlaylists staged. Beginning track scrape process...");
+        final Paging<PlaylistTrack> playlistTracks = api.getPlaylistTracks(lastId);
+        Track[] tracks = api.getTracksDetailed(playlistTracks.getItems());
+        for (Track t : tracks) {
+            database.processTrack(t);
         }
     }
 

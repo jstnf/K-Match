@@ -2,10 +2,16 @@ package dev.justinf.kmatch.spotify;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
+import com.wrapper.spotify.model_objects.IPlaylistItem;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistRequest;
+import com.wrapper.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
+import com.wrapper.spotify.requests.data.tracks.GetSeveralTracksRequest;
 import dev.justinf.kmatch.KMSpotifyGet;
 import dev.justinf.kmatch.spotify.auth.KMAuthServer;
 
@@ -90,6 +96,33 @@ public class SpotifyAPI {
             Playlist playlist = request.execute();
             stagedPlaylists.put(playlistId, playlist);
             return playlist;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Paging<PlaylistTrack> getPlaylistTracks(String playlistId) {
+        GetPlaylistsItemsRequest request = api.getPlaylistsItems(playlistId)
+                .limit(50)
+                .build();
+        try {
+            return request.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Track[] getTracksDetailed(PlaylistTrack[] playlistTracks) {
+        String[] array = new String[0];
+        GetSeveralTracksRequest request = api.getSeveralTracks(Arrays.stream(playlistTracks)
+                .map(PlaylistTrack::getTrack)
+                .map(IPlaylistItem::getId)
+                .toArray(String[]::new))
+                .build();
+        try {
+            return request.execute();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
