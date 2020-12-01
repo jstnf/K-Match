@@ -31,9 +31,9 @@
         </dependency>
         <!-- Spotify Web API -->
         <dependency>
-            <groupId>com.github.imanzano</groupId>
+            <groupId>se.michaelthelin.spotify</groupId>
             <artifactId>spotify-web-api-java</artifactId>
-            <version>1.5.4.9-beta</version>
+            <version>6.5.0</version>
         </dependency>
         <!-- GSON -->
         <dependency> <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->

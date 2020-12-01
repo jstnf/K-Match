@@ -1,6 +1,6 @@
 package dev.justinf.kmatch;
 
-import com.wrapper.spotify.models.Playlist;
+import com.wrapper.spotify.model_objects.specification.Playlist;
 import dev.justinf.kmatch.spotify.SpotifyAPI;
 import dev.justinf.kmatch.sql.KMDatabase;
 
@@ -146,8 +146,6 @@ public class KMSpotifyGet {
                 System.out.println(" - \"" + playlist.getName() + "\"");
                 System.out.println(" - " + playlist.getTracks().getTotal() + " songs (expected)");
             }
-
-            api.scrape(playlist);
         }
     }
 

@@ -1,8 +1,8 @@
 package dev.justinf.kmatch.sql;
 
 import com.mysql.cj.jdbc.Driver;
-import com.wrapper.spotify.models.SimpleArtist;
-import com.wrapper.spotify.models.Track;
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
+import com.wrapper.spotify.model_objects.specification.Track;
 import dev.justinf.kmatch.KMSpotifyGet;
 
 import java.sql.Connection;
@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class KMDatabase {
@@ -73,9 +74,9 @@ public class KMDatabase {
     public void processTrack(Track track) {
         System.out.println(track.getName());
         System.out.print(" - Artists: ");
-        System.out.println(track.getArtists().stream().map(SimpleArtist::getName).collect(Collectors.joining(", ")));
+        System.out.println(Arrays.asList(track.getArtists()).stream().map(ArtistSimplified::getName).collect(Collectors.joining(", ")));
         System.out.println(" - Album: " + track.getAlbum().getName());
-        System.out.println(" - Duration: " + track.getDuration() + "ms");
+        System.out.println(" - Duration: " + track.getDurationMs() + "ms");
         System.out.println(" - Popularity (0-100): " + track.getPopularity());
     }
 
@@ -135,13 +136,5 @@ public class KMDatabase {
 
     public String getUser() {
         return user;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 }
