@@ -1,8 +1,6 @@
 package dev.justinf.kmatch;
 
-import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.Playlist;
-import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import dev.justinf.kmatch.spotify.SpotifyAPI;
 import dev.justinf.kmatch.sql.KMDatabase;
@@ -11,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class KMSpotifyGet {
@@ -137,9 +136,7 @@ public class KMSpotifyGet {
         System.out.println("Successfully obtained Spotify authentication token.");
         System.out.println("Proceeding to scrape entries and write to database...");
 
-        String lastId = "";
-
-        System.out.println("Staging playlists:");
+        System.out.println("\nStaging playlists:");
         for (String id : api.getPlaylistIds()) {
             System.out.println("Requesting playlist information for playlist id " + id + "...");
             Playlist playlist = api.stagePlaylist(id);
@@ -150,21 +147,39 @@ public class KMSpotifyGet {
                 System.out.println(" - " + playlist.getId());
                 System.out.println(" - \"" + playlist.getName() + "\"");
                 System.out.println(" - " + playlist.getTracks().getTotal() + " songs (expected)");
-
-                lastId = id;
             }
         }
 
         System.out.println("\nPlaylists staged. Beginning track scrape process...");
-        final Paging<PlaylistTrack> playlistTracks = api.getPlaylistTracks(lastId);
-        Track[] tracks = api.getTracksDetailed(playlistTracks.getItems());
-        for (Track t : tracks) {
-            database.processTrack(t);
+        int processed = 0;
+        for (Map.Entry<String, Playlist> pair : api.getStagedPlaylists().entrySet()) {
+            processed++;
+            System.out.println("Scraping " + pair.getValue().getName() + " playlist!");
+            List<Track> tracks = api.getEntirePlaylistTracks(pair.getKey());
+            if (tracks == null) {
+                System.out.println("Error obtaining tracks! Please try again.");
+            } else {
+                System.out.println("SCRAPE SUMMARY FOR PLAYLIST \"" + pair.getValue().getName() + "\":");
+                System.out.println("Obtained " + tracks.size() + " out of " + pair.getValue().getTracks().getTotal() + " expected tracks from the playlist!");
+
+                // todo Do something with all the tracks...
+            }
+
+            if (processed < api.getStagedPlaylists().size()) {
+                System.out.println("Waiting 5 seconds before scraping next playlist...\n");
+                try {
+                    Thread.sleep(5000);
+                } catch (Exception ignored) { }
+            }
         }
     }
 
     /* getset */
     public KMDatabase getDatabase() {
         return database;
+    }
+
+    public List<String> getIgnoredWords() {
+        return ignoredWords;
     }
 }
