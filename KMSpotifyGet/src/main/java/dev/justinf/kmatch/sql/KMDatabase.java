@@ -51,7 +51,7 @@ public class KMDatabase {
     public boolean init() {
         try {
             DriverManager.registerDriver(new Driver());
-            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/mysql?autoReconnect=true", user, pass);
+            connection = DriverManager.getConnection("jdbc:mysql://" + address + ":" + port + "/mysql?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8", user, pass);
             connection.setAutoCommit(true);
             return true;
         } catch (Exception e) {
