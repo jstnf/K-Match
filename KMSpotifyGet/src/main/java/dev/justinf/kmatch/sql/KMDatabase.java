@@ -17,6 +17,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,12 +42,15 @@ public class KMDatabase {
 
     private Connection connection;
 
+    private final Map<Track, Exception> errorTracks;
+
     public KMDatabase(KMSpotifyGet sg, String address, String port, String user, String pass) {
         this.sg = sg;
         this.address = address;
         this.port = port;
         this.user = user;
         this.pass = pass;
+        errorTracks = new HashMap<>();
     }
 
     public boolean init() {
@@ -84,19 +89,19 @@ public class KMDatabase {
         createSongArtistTable();
     }
 
-    public void uploadTracks(Track... tracks) throws Exception {
+    public void uploadTracks(Track... tracks) {
         int progress = 0;
 
         for (Track t : tracks) {
             progress++;
             System.out.println("Uploading " + t.getId() + " - " + t.getName() + " into database. (" + progress + " / " + tracks.length + ")");
-            uploadArtistBatch(Stream.of(t.getArtists(), t.getAlbum().getArtists()).flatMap(Stream::of).toArray(ArtistSimplified[]::new));
-
-            // Now ensure that album exists in DB
-            uploadAlbum(t.getAlbum());
-
-            // Finally, upload the track itself along with song artist entries
-            uploadTrack(t);
+            try {
+                uploadArtistBatch(Stream.of(t.getArtists(), t.getAlbum().getArtists()).flatMap(Stream::of).toArray(ArtistSimplified[]::new));
+                uploadAlbum(t.getAlbum()); // Now ensure that album exists in DB
+                uploadTrack(t); // Finally, upload the track itself along with song artist entries
+            } catch (Exception e) {
+                errorTracks.put(t, e);
+            }
         }
     }
 
@@ -129,7 +134,7 @@ public class KMDatabase {
 
     // This method assumes that all artists and the album are already in the database
     private void uploadTrack(Track track) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("INSERT INTO " + SONG_TABLE + " (id, name, albumId, duration, popularity) VALUES (?, ?, ?, ?, ?);");
+        PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO " + SONG_TABLE + " (id, name, albumId, duration, popularity) VALUES (?, ?, ?, ?, ?);");
         ps.setString(1, track.getId());
         ps.setString(2, track.getName());
         ps.setString(3, track.getAlbum().getId());
@@ -137,7 +142,7 @@ public class KMDatabase {
         ps.setInt(5, track.getPopularity());
         ps.executeUpdate();
 
-        ps = connection.prepareStatement("INSERT INTO " + SONG_ARTIST_TABLE + " (songId, artistId) VALUES (?, ?);");
+        ps = connection.prepareStatement("INSERT IGNORE INTO " + SONG_ARTIST_TABLE + " (songId, artistId) VALUES (?, ?);");
         for (ArtistSimplified as : track.getArtists()) {
             ps.setString(1, track.getId());
             ps.setString(2, as.getId());
@@ -238,5 +243,9 @@ public class KMDatabase {
 
     public String getUser() {
         return user;
+    }
+
+    public Map<Track, Exception> getErrorTracks() {
+        return errorTracks;
     }
 }

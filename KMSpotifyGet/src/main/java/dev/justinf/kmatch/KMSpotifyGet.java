@@ -163,12 +163,8 @@ public class KMSpotifyGet {
                 System.out.println("Obtained " + tracks.size() + " out of " + pair.getValue().getTracks().getTotal() + " expected tracks from the playlist!");
 
                 System.out.println("Beginning database upload of " + tracks.size() + " tracks...");
-                try {
-                    database.uploadTracks(tracks.toArray(new Track[0]));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("Error uploading tracks. Continuing to next playlist...");
-                }
+                database.uploadTracks(tracks.toArray(new Track[0]));
+                System.out.println("Database upload completed.");
             }
 
             if (processed < api.getStagedPlaylists().size()) {
@@ -177,6 +173,18 @@ public class KMSpotifyGet {
                     Thread.sleep(5000);
                 } catch (Exception ignored) { }
             }
+        }
+
+        complete();
+    }
+
+    private void complete() {
+        System.out.println("Process complete!");
+        System.out.println(database.getErrorTracks().size() + " tracks had errors being uploaded to the database.");
+        System.out.println("Dumping error track information below:");
+        for (Map.Entry<Track, Exception> pair : database.getErrorTracks().entrySet()) {
+            database.printTrack(pair.getKey());
+            System.out.println(pair.getValue().getClass().getName() + ": " + pair.getValue().getMessage());
         }
     }
 
