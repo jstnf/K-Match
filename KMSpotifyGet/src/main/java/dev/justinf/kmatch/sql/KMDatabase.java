@@ -68,7 +68,7 @@ public class KMDatabase {
             connection.setCatalog(DATABASE_NAME);
             return false;
         } else {
-            ps = connection.prepareStatement("CREATE DATABASE " + DATABASE_NAME + ";");
+            ps = connection.prepareStatement("CREATE DATABASE " + DATABASE_NAME + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
             ps.executeUpdate();
             connection.setCatalog(DATABASE_NAME);
             validateTables();
