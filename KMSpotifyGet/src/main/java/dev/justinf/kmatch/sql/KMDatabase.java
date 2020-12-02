@@ -1,18 +1,24 @@
 package dev.justinf.kmatch.sql;
 
 import com.mysql.cj.jdbc.Driver;
+import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.Track;
 import dev.justinf.kmatch.KMSpotifyGet;
 import dev.justinf.kmatch.utils.StringUtils;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class KMDatabase {
 
@@ -22,6 +28,8 @@ public class KMDatabase {
     public static final String SONG_TABLE = "songs";
     public static final String ALBUM_ARTIST_TABLE = "album_artists";
     public static final String SONG_ARTIST_TABLE = "song_artists";
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private final KMSpotifyGet sg;
 
@@ -76,6 +84,65 @@ public class KMDatabase {
         createSongArtistTable();
     }
 
+    public void uploadTracks(Track... tracks) throws Exception {
+        for (Track t : tracks) {
+            System.out.println("Uploading " + t.getId() + " - " + t.getName() + " into database.");
+            uploadArtistBatch(Stream.of(t.getArtists(), t.getAlbum().getArtists()).flatMap(Stream::of).toArray(ArtistSimplified[]::new));
+
+            // Now ensure that album exists in DB
+            uploadAlbum(t.getAlbum());
+
+            // Finally, upload the track itself along with song artist entries
+            uploadTrack(t);
+        }
+    }
+
+    private void uploadArtistBatch(ArtistSimplified... artists) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO " + ARTIST_TABLE + " (id, name) VALUES (?, ?);");
+        for (ArtistSimplified as : artists) {
+            ps.setString(1, as.getId());
+            ps.setString(2, as.getName());
+            ps.addBatch();
+        }
+        ps.executeBatch();
+    }
+
+    // This method assumes that all artists are already in the database
+    private void uploadAlbum(AlbumSimplified album) throws SQLException, ParseException {
+        PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO " + ALBUM_TABLE + " (id, name, `release`) VALUES (?, ?, ?);");
+        ps.setString(1, album.getId());
+        ps.setString(2, album.getName());
+        ps.setDate(3, Date.valueOf(LocalDate.parse(album.getReleaseDate(), DATE_FORMAT)));
+        ps.executeUpdate();
+
+        ps = connection.prepareStatement("INSERT IGNORE INTO " + ALBUM_ARTIST_TABLE + " (albumId, artistId) VALUES (?, ?);");
+        for (ArtistSimplified as : album.getArtists()) {
+            ps.setString(1, album.getId());
+            ps.setString(2, as.getId());
+            ps.addBatch();
+        }
+        ps.executeBatch();
+    }
+
+    // This method assumes that all artists and the album are already in the database
+    private void uploadTrack(Track track) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO " + SONG_TABLE + " (id, name, albumId, duration, popularity) VALUES (?, ?, ?, ?, ?);");
+        ps.setString(1, track.getId());
+        ps.setString(2, track.getName());
+        ps.setString(3, track.getAlbum().getId());
+        ps.setInt(4, track.getDurationMs());
+        ps.setInt(5, track.getPopularity());
+        ps.executeUpdate();
+
+        ps = connection.prepareStatement("INSERT INTO " + SONG_ARTIST_TABLE + " (songId, artistId) VALUES (?, ?);");
+        for (ArtistSimplified as : track.getArtists()) {
+            ps.setString(1, track.getId());
+            ps.setString(2, as.getId());
+            ps.addBatch();
+        }
+        ps.executeBatch();
+    }
+
     public void printTrack(Track track) {
         System.out.println(track.getName());
         System.out.print(" - Artists: ");
@@ -102,6 +169,7 @@ public class KMDatabase {
         PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `" + ALBUM_TABLE + "` (" +
                 "`id` VARCHAR(22) NOT NULL DEFAULT '', " +
                 "`name` VARCHAR(128) NOT NULL DEFAULT '', " +
+                "`release` DATE NOT NULL, " +
                 "PRIMARY KEY (`id`));");
         ps.executeUpdate();
 
@@ -116,7 +184,6 @@ public class KMDatabase {
                 "`name` VARCHAR(128) NOT NULL DEFAULT '', " +
                 "`albumId` VARCHAR(22) NOT NULL DEFAULT '', " +
                 "`duration` BIGINT NOT NULL DEFAULT 0, " +
-                "`release` DATE NOT NULL, " +
                 "`popularity` INT NOT NULL DEFAULT 0, " +
                 "PRIMARY KEY (`id`), " +
                 "FOREIGN KEY (`albumId`) REFERENCES " + ALBUM_TABLE + " (`id`));");

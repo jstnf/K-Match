@@ -146,7 +146,7 @@ public class KMSpotifyGet {
                 System.out.println("Success!");
                 System.out.println(" - " + playlist.getId());
                 System.out.println(" - \"" + playlist.getName() + "\"");
-                System.out.println(" - " + playlist.getTracks().getTotal() + " songs (expected)");
+                System.out.println(" - " + playlist.getTracks().getTotal() + " tracks (expected)");
             }
         }
 
@@ -162,7 +162,13 @@ public class KMSpotifyGet {
                 System.out.println("SCRAPE SUMMARY FOR PLAYLIST \"" + pair.getValue().getName() + "\":");
                 System.out.println("Obtained " + tracks.size() + " out of " + pair.getValue().getTracks().getTotal() + " expected tracks from the playlist!");
 
-                // todo Do something with all the tracks...
+                System.out.println("Beginning database upload of " + tracks.size() + " tracks...");
+                try {
+                    database.uploadTracks(tracks.toArray(new Track[0]));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Error uploading tracks. Continuing to next playlist...");
+                }
             }
 
             if (processed < api.getStagedPlaylists().size()) {
