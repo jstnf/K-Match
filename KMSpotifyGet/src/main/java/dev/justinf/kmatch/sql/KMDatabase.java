@@ -85,8 +85,11 @@ public class KMDatabase {
     }
 
     public void uploadTracks(Track... tracks) throws Exception {
+        int progress = 0;
+
         for (Track t : tracks) {
-            System.out.println("Uploading " + t.getId() + " - " + t.getName() + " into database.");
+            progress++;
+            System.out.println("Uploading " + t.getId() + " - " + t.getName() + " into database. (" + progress + " / " + tracks.length + ")");
             uploadArtistBatch(Stream.of(t.getArtists(), t.getAlbum().getArtists()).flatMap(Stream::of).toArray(ArtistSimplified[]::new));
 
             // Now ensure that album exists in DB
