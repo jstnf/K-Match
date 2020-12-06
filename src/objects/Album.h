@@ -15,6 +15,10 @@ class Album {
         artistIds = new std::vector<std::string>();
     }
 
+    ~Album() {
+        delete artistIds;
+    }
+
     void addArtist(std::string artistId) {
         artistIds->push_back(artistId);
     }

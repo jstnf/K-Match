@@ -18,6 +18,10 @@ class Track {
         artistIds = new std::vector<std::string>();
     }
 
+    ~Track() {
+        delete artistIds;
+    }
+
     void addArtist(std::string artistId) {
         artistIds->push_back(artistId);
     }
