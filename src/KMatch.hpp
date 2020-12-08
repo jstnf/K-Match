@@ -22,6 +22,10 @@ class KMatch {
     SearchEngine* getSearchEngine() {
         return se;
     }
+
+    User* getUser() {
+        return user;
+    }
 };
 
 #endif
