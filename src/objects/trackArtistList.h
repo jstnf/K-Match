@@ -33,12 +33,12 @@ class TrackArtistList
     });
 }
 
-vector<TrackArtist> getAlphaSortTracksZ2A()
+vector<TrackArtist> getAlphaSortTracksA2Z()
 {
     return vTracksArtist;
 }
 
-vector<TrackArtist> getAlphaSortTracksA2Z()
+vector<TrackArtist> getAlphaSortTracksZ2A()
 {
     reverse(vTracksArtist.begin(), vTracksArtist.end());
     return vTracksArtist;
