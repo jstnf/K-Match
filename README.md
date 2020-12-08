@@ -36,9 +36,8 @@ Our class diagram can be found on Google Drawings [**here**](https://docs.google
 
 ## Screenshots
  
- [**Main Menu of Program**](https://drive.google.com/file/d/1HLWjO673QmvN0JbGIIZo2CDR3ijdda4G/view?usp=sharing)
  
- [**Example Input and Output**](https://drive.google.com/file/d/1yLHeI__ZnOB-oYXIHFLWQxDeNWG9ApDc/view?usp=sharing)
+ [**Example Input and Output with the Main Menu**](https://drive.google.com/file/d/1yLHeI__ZnOB-oYXIHFLWQxDeNWG9ApDc/view?usp=sharing)
  
 ## Installation/Usage
  > Instructions on installing and running your application
