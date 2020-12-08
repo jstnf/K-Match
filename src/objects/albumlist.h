@@ -1,11 +1,12 @@
 #ifndef __ALBUM_H
 #define __ALBUM_H
 
-#include "album.h"
+#include "Album.h"
 
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ class AlbumList
     {
         sort(vAlbum.begin(), vAlbum.end(), [](Album &a1, Album &a2 )
         {
-            return a1.getAlbumRelease() < a2.getAlbumRelease();
+            return a1.getAlbumRelease() > a2.getAlbumRelease();
         });
         return vAlbum;
     }
@@ -58,16 +59,17 @@ class AlbumList
     {
         sort(vAlbum.begin(), vAlbum.end(), [](Album &a1, Album &a2 )
         {
-            return a1.getAlbumRelease() > a2.getAlbumRelease();
+            return a1.getAlbumRelease() < a2.getAlbumRelease();
         });
 
         return vAlbum;
     }    
 
-    void printArtistVector(Album newAlbum)
+    void printAlbumVector(Album newAlbum)
     {
-        cout << "Artist ID: " << newAlbum.getAlbumID() << endl;
-        cout << "Artist Name: " << newAlbum.getAlbumName() << endl;
+        cout << "Album ID: " << newAlbum.getAlbumID() << endl;
+        cout << "Album Name: " << newAlbum.getAlbumName() << endl;
+        cout << "Album Release Date: " << newAlbum.getAlbumRelease() << endl;
         cout << endl;
     }
 
