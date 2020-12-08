@@ -7,22 +7,28 @@
 #include <vector>
 
 class TrackSort {
-  protected:
-    virtual bool operator()(const Track& t1, const Track& t2) = 0;
   public:
-    void sort(std::vector<Track*> &vect) {
-        std::sort(vect.begin(), vect.end(), this);
-    }
+    virtual void sort(std::vector<Track*> &vect) const = 0;
 };
 
 class PopularitySort : public TrackSort {
-  protected:
-    virtual bool operator()(const Track& t1, const Track& t2);
+  private:
+    static bool compare(const Track* t1, const Track* t2);
+
+  public:
+    virtual void sort(std::vector<Track*> &vect) const {
+        std::sort(vect.begin(), vect.end(), compare);
+    }
 };
 
 class AlphabeticalSort : public TrackSort {
-  protected:
-    virtual bool operator()(const Track& t1, const Track& t2);
+  private:
+    static bool compare(const Track* t1, const Track* t2);
+
+  public:
+    virtual void sort(std::vector<Track*> &vect) const {
+        std::sort(vect.begin(), vect.end(), compare);
+    }
 };
 
 #endif
