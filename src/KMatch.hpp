@@ -1,11 +1,13 @@
 #ifndef __KMATCH_H__
 #define __KMATCH_H__
 
-#include "io/ObjectLoader.h"
 #include "algorithm/SearchEngine.h"
+#include "io/ObjectLoader.h"
+#include "user/User.h"
 
 class KMatch {
   private:
+    User* user;
     ObjectManager* om;
     SearchEngine* se;
 
