@@ -38,7 +38,6 @@ Our class diagram can be found on Google Drawings [**here**](https://docs.google
  [**Example Input and Output with the Main Menu**](https://drive.google.com/file/d/1yLHeI__ZnOB-oYXIHFLWQxDeNWG9ApDc/view?usp=sharing)
  
 ## Installation/Usage
- > Instructions on installing and running your application
  1) Download repository as zip along with kmatch_files [**here**](https://drive.google.com/file/d/10wGPB69J7lD7MQI1f1WxnTzN_BR_sfcH/view?usp=sharing)
  2) Run cmake .
  4) Run make
