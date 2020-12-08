@@ -2,6 +2,7 @@ package dev.justinf.kmatch;
 
 import com.wrapper.spotify.model_objects.specification.Playlist;
 import com.wrapper.spotify.model_objects.specification.Track;
+import dev.justinf.kmatch.io.TSVWriter;
 import dev.justinf.kmatch.spotify.SpotifyAPI;
 import dev.justinf.kmatch.sql.KMDatabase;
 
@@ -17,6 +18,7 @@ public class KMSpotifyGet {
     private final List<String> ignoredWords;
     private final SpotifyAPI api;
     private KMDatabase database;
+    private TSVWriter tsvWriter;
     private boolean databaseMode;
 
     public KMSpotifyGet() {
@@ -29,17 +31,14 @@ public class KMSpotifyGet {
         System.out.println("K-Match \"Spotify-Get\" Utility");
 
         Scanner input = new Scanner(System.in);
-
-        boolean choiceMade = false;
-        String choice;
-        while (!choiceMade) {
+        while (true) {
             System.out.println("Would you like to generate TSV files instead of uploading to a MySQL database? (y/n)");
             System.out.println(" > ");
-            choice = input.nextLine();
+            String choice = input.nextLine();
             switch (choice.toLowerCase()) {
                 case "y":
-                    doSpotifyAuth();
-                    break;
+                    tsvModeStart();
+                    return;
                 case "n":
                     databaseMode = true;
                     databaseModeStart();
@@ -49,6 +48,16 @@ public class KMSpotifyGet {
                     break;
             }
         }
+    }
+
+    private void tsvModeStart() {
+        System.out.println("Writing data to 5 .tsv files!");
+        tsvWriter = new TSVWriter();
+        if (!tsvWriter.initialize()) {
+            System.out.println("Unable to initialize file writers. Please try again.");
+            return;
+        }
+        doSpotifyAuth();
     }
 
     private void databaseModeStart() {
@@ -201,12 +210,13 @@ public class KMSpotifyGet {
                 System.out.println("Obtained " + tracks.size() + " out of " + pair.getValue().getTracks().getTotal() + " expected tracks from the playlist!");
 
                 // Change behavior here based on database mode
+                System.out.println("Beginning processing of " + tracks.size() + " tracks...");
                 if (databaseMode) {
-                    System.out.println("Beginning database upload of " + tracks.size() + " tracks...");
                     database.uploadTracks(tracks.toArray(new Track[0]));
                     System.out.println("Database upload completed.");
                 } else {
-
+                    tsvWriter.writeTracks(tracks.toArray(new Track[0]));
+                    System.out.println("File writing completed.");
                 }
             }
 
@@ -228,6 +238,15 @@ public class KMSpotifyGet {
             System.out.println("Dumping error track information below:");
             for (Map.Entry<Track, Exception> pair : database.getErrorTracks().entrySet()) {
                 database.printTrack(pair.getKey());
+                System.out.println(pair.getValue().getClass().getName() + ": " + pair.getValue().getMessage());
+            }
+        } else {
+            tsvWriter.end();
+            System.out.println("Successfully completed TSV file writing.");
+            System.out.println(tsvWriter.getErrorTracks().size() + " tracks had errors being written to the files.");
+            System.out.println("Dumping error track information below:");
+            for (Map.Entry<Track, Exception> pair : tsvWriter.getErrorTracks().entrySet()) {
+                tsvWriter.printTrack(pair.getKey());
                 System.out.println(pair.getValue().getClass().getName() + ": " + pair.getValue().getMessage());
             }
         }
