@@ -1,6 +1,7 @@
 #ifndef __KMUTILS_H__
 #define __KMUTILS_H__
 
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -11,10 +12,10 @@ class Strings {
         char* cstr = const_cast<char*>(str.c_str());
         char* current;
         std::vector<std::string> arr;
-        current = strtok_s(cstr, separator.c_str());
-        while (current != NULL){
+        current = strtok(cstr, separator.c_str());
+        while (current != NULL) {
             arr.push_back(current);
-            current = strtok(NULL, sep.c_str());
+            current = strtok(NULL, separator.c_str());
         }
         return arr;
     }
