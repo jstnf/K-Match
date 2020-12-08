@@ -7,13 +7,16 @@
 #include <stdlib.h>
 using namespace std;
 
-class handler : public mainMenu {
+class handler {
     private:
         handler *nextRequest;
     public: 
-        handler(){nextRequest = NULL;}
+        handler(){
+            nextRequest = NULL;
+        }
+        ~handler(){ };
         virtual void setNextHandler(handler *nextHandler) = 0;
-        virtual void handleRequest(char c) = 0; 
+        virtual void handleRequest(char c) = 0;
 };
 
 

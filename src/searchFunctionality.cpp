@@ -21,8 +21,12 @@ void menuSearch::handleRequest(char c){
                 cout << "---------------------------------------------------------------" << endl;
 
                 cin >> response;
-                   
+
+
             }
+        }
+        else if (input == '0'){
+            return;
         }
         else if (input != NULL){
             nextHandler->handleRequest(input);
