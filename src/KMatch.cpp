@@ -36,8 +36,8 @@ int KMatch::initialize() {
 
 int KMatch::mainMenu() {
     char menuInput = ' ';
-    menuSearch *search = new menuSearch();
-    menuSavedData *savedData = new menuSavedData();
+    menuSearch *search = new menuSearch(this);
+    menuSavedData *savedData = new menuSavedData(this);
     menuEndProgram *endProgram = new menuEndProgram();
     while (menuInput != '0'){
         std::cout << "--------------------------------------------" << std::endl;

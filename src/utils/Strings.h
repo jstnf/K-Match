@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -25,6 +26,14 @@ class Strings {
         std::string data = str;
         std::transform(data.begin(), data.end(), data.begin(), [](unsigned char c){ return std::tolower(c); });
         return data;
+    }
+
+    static std::string durationFromMs(int ms) {
+        int seconds = ms / 1000 % 60;
+        int minutes = ms / 60000;
+        std::ostringstream temp("");
+        temp << minutes << ":" << (seconds < 10 ? "0" : "") << seconds;
+        return temp.str();
     }
 };
 

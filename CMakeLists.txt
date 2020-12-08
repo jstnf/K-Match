@@ -14,4 +14,6 @@ SET(SOURCE_FILES src/main.cpp
         src/menu/handler/userSavedDataFunctionality.cpp
         src/objects/ObjectManager.cpp)
 
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
+
 ADD_EXECUTABLE(kmatch ${SOURCE_FILES})
