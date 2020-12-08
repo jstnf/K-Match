@@ -1,52 +1,26 @@
 #ifndef __TRACK_H__
 #define __TRACK_H__
 
-#include <string>
-#include <vector>
+#include "KMObject.h"
 
-class Track {
+class Track : public KMObject {
   private:
-    std::string id;
-    std::string name;
-    std::vector<std::string>* artistIds;
-    std::string albumId;
-    int durationMs;
-    int popularity;
+    const std::string albumId;
+    const int durationMs;
+    const int popularity;
     
   public:
-    Track(std::string name, std::string albumId, int durationMs, int popularity) : name(name), albumId(albumId), durationMs(durationMs), popularity(popularity) {
-        artistIds = new std::vector<std::string>();
-    }
+    Track(std::string id, std::string name, std::string albumId, int durationMs, int popularity) : KMObject(id, name), albumId(albumId), durationMs(durationMs), popularity(popularity) { }
 
-    ~Track() {
-        delete artistIds;
-    }
-
-    void addArtist(std::string artistId) {
-        artistIds->push_back(artistId);
-    }
-
-    std::string getId() {
-        return id;
-    }
-
-    std::string getName() {
-        return name;
-    }
-
-    std::vector<std::string>* getArtistIds() {
-        return artistIds;
-    }
-
-    std::string getAlbumId() {
+    std::string getAlbumId() const {
         return albumId;
     }
 
-    int getDurationMs() {
+    int getDurationMs() const {
         return durationMs;
     }
 
-    int getPopularity() {
+    int getPopularity() const {
         return popularity;
     }
 };
