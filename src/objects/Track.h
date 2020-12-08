@@ -5,32 +5,32 @@
 
 class Track {
   private:
-    std::string id;
-    std::string name;
-    std::string albumId;
-    int durationMs;
-    int popularity;
+    const std::string id;
+    const std::string name;
+    const std::string albumId;
+    const int durationMs;
+    const int popularity;
     
   public:
     Track(std::string name, std::string albumId, int durationMs, int popularity) : name(name), albumId(albumId), durationMs(durationMs), popularity(popularity) { }
 
-    std::string getId() {
+    std::string getId() const {
         return id;
     }
 
-    std::string getName() {
+    std::string getName() const {
         return name;
     }
 
-    std::string getAlbumId() {
+    std::string getAlbumId() const {
         return albumId;
     }
 
-    int getDurationMs() {
+    int getDurationMs() const {
         return durationMs;
     }
 
-    int getPopularity() {
+    int getPopularity() const {
         return popularity;
     }
 };

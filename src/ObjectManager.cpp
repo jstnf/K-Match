@@ -50,22 +50,22 @@ void ObjectManager::addAlbumArtist(std::string albumId, std::string artistId) {
     }
 }
 
-Album* ObjectManager::getAlbum(std::string id) {
+Album* ObjectManager::getAlbum(std::string id) const {
     return albums->at(id);
 }
 
-Artist* ObjectManager::getArtist(std::string id) {
+Artist* ObjectManager::getArtist(std::string id) const {
     return artists->at(id);
 }
 
-Track* ObjectManager::getTrack(std::string id) {
+Track* ObjectManager::getTrack(std::string id) const {
     return tracks->at(id);
 }
 
-std::vector<std::string> ObjectManager::getTrackArtists(std::string trackId) {
+std::vector<std::string> ObjectManager::getTrackArtists(std::string trackId) const {
     return trackArtists->at(trackId);
 }
 
-std::vector<std::string> ObjectManager::getAlbumArtists(std::string albumId) {
+std::vector<std::string> ObjectManager::getAlbumArtists(std::string albumId) const {
     return albumArtists->at(albumId);
 }

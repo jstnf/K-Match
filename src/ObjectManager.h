@@ -24,21 +24,21 @@ class ObjectManager {
     void add(Track* track);
     void addTrackArtist(std::string trackId, std::string artistId);
     void addAlbumArtist(std::string albumId, std::string artistId);
-    Album* getAlbum(std::string id);
-    Artist* getArtist(std::string id);
-    Track* getTrack(std::string id);
-    std::vector<std::string> getTrackArtists(std::string trackId);
-    std::vector<std::string> getAlbumArtists(std::string albumId);
+    Album* getAlbum(std::string id) const;
+    Artist* getArtist(std::string id) const;
+    Track* getTrack(std::string id) const;
+    std::vector<std::string> getTrackArtists(std::string trackId) const;
+    std::vector<std::string> getAlbumArtists(std::string albumId) const;
 
-    std::unordered_map<std::string, Album*>* getAlbums() {
+    std::unordered_map<std::string, Album*>* getAlbums() const {
         return albums;
     }
 
-    std::unordered_map<std::string, Artist*>* getArtists() {
+    std::unordered_map<std::string, Artist*>* getArtists() const {
         return artists;
     }
 
-    std::unordered_map<std::string, Track*>* getTracks() {
+    std::unordered_map<std::string, Track*>* getTracks() const {
         return tracks;
     }
 };

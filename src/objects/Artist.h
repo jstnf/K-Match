@@ -5,17 +5,17 @@
 
 class Artist {
   private:
-    std::string id;
-    std::string name;
+    const std::string id;
+    const std::string name;
 
   public:
     Artist(std::string id, std::string name) : id(id), name(name) { }
 
-    std::string getId() {
+    std::string getId() const {
         return id;
     }
 
-    std::string getName() {
+    std::string getName() const {
         return name;
     }
 };
