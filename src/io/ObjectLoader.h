@@ -1,7 +1,7 @@
 #ifndef __OBJECTLOADER_H__
 #define __OBJECTLOADER_H__
 
-#include "../ObjectManager.h"
+#include "../objects/ObjectManager.h"
 
 class ObjectLoader {
   private:

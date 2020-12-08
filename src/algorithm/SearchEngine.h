@@ -1,8 +1,8 @@
 #ifndef __SEARCHENGINE_H__
 #define __SEARCHENGINE_H__
 
-#include "../algorithm/TrackSort.h"
-#include "../ObjectManager.h"
+#include "TrackSort.h"
+#include "../objects/ObjectManager.h"
 
 #include <string>
 #include <vector>
