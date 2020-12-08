@@ -3,10 +3,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_CXX_STANDARD 11)
 
-SET(SOURCE_FILES src/main.cpp
-        src/algorithm/SearchEngine.cpp
-        src/algorithm/TrackSort.cpp
-        src/io/ObjectLoader.cpp
-        src/objects/ObjectManager.cpp)
+SET(SOURCE_FILES src/mainExecutable.cpp
+        src/menu/handler/endProgramFunctionality.cpp
+        src/menu/handler/searchFunctionality.cpp
+        src/menu/handler/userSavedDataFunctionality.cpp)
 
 ADD_EXECUTABLE(kmatch ${SOURCE_FILES})

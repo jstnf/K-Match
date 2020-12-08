@@ -1,11 +1,9 @@
 #ifndef __HANDLER_HPP_
 #define __HANDLER_HPP_
 
-#include "mainMenu.hpp"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-using namespace std;
 
 class handler {
     private:
