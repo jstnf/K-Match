@@ -1,6 +1,5 @@
 #include "../header/endProgramFunctionality.hpp"
 #include "../header/handler.hpp"
-#include "../header/mainMenu.hpp"
 #include "../header/recommendFunctionality.hpp"
 #include "../header/searchFunctionality.hpp"
 #include "../header/userSavedDataFunctionality.hpp"
