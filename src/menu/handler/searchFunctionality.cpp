@@ -2,6 +2,8 @@
 #include "../handler.hpp"
 #include <utils/Strings.h>
 
+#include <algorithm>
+
 void menuSearch::setNextHandler(handler *request){
     nextHandler = request;
 }
@@ -9,6 +11,7 @@ void menuSearch::setNextHandler(handler *request){
 void menuSearch::handleRequest(char c){
     bool searched = false;
     int page = 1;
+    int maxPages = 0;
     std::vector<Track*> results;
 
     char input = c;
@@ -17,6 +20,7 @@ void menuSearch::handleRequest(char c){
         while (response != "0") {
             std::cout << std::endl;
             if (!searched) {
+                page = 1;
                 std::cout << "---------------------------------------------------------------" << std::endl;
                 std::cout << "   Please enter in the song you are searching for " << std::endl;
                 std::cout << "   or enter 0 to return to the main menu." << std::endl;
@@ -29,7 +33,9 @@ void menuSearch::handleRequest(char c){
             } else {
                 std::string searchResponse;
                 int num = (page - 1) * 9 + 1;
+                maxPages = results.size() / 9 + (std::min((int) results.size() % 9, 1));
                 int resultsShown = 0;
+                std::cout << "Found " << results.size() << " songs to browse. (Page " << page << "/" << maxPages << ")" << std::endl;
                 for (auto it = results.begin() + num - 1; it != results.end() && resultsShown < 9; it++) {
                     Track* t = *it;
                     std::cout << "[" << num << "] " << t->getName() << " - ";
@@ -54,14 +60,26 @@ void menuSearch::handleRequest(char c){
                 getline(std::cin, searchResponse);
 
                 if (searchResponse == "n" || searchResponse == "N") {
-                    std::cout << "TODO: next page" << std::endl;
+                    if (page + 1 <= maxPages) {
+                        page++;
+                    } else {
+                        std::cout << "Cannot increase pages anymore!" << std::endl;
+                    }
                 } else if (searchResponse == "p" || searchResponse == "P") {
-                    std::cout << "TODO: prev page" << std::endl;
+                    if (page > 1) {
+                        page--;
+                    } else {
+                        std::cout << "Cannot decrease pages anymore!" << std::endl;
+                    }
                 } else if (searchResponse == "0") {
                     searched = false;
                 } else if (is_number(searchResponse)) {
                     int num = atoi(searchResponse.c_str());
-                    openTrack(results.at(num - 1));
+                    if (num - 1 < results.size()) {
+                        openTrack(results.at(num - 1));
+                    } else {
+                        std::cout << "Invalid input. Please try again." << std::endl;
+                    }
                 } else{
                     std::cout << "Invalid input. Please try again." << std::endl;
                 }
