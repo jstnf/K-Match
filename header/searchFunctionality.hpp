@@ -18,8 +18,9 @@ class menuSearch : public handler {
         void handleRequest(char c){
             char input = c;
             if(input == '1'){
+                cout << endl;
                 cout << "---------------------------------------------------------------" << endl;
-                cout << "Please enter in the song or artist you are searching for: " << endl;
+                cout << "   Please enter in the song or artist you are searching for: " << endl;
                 cout << "---------------------------------------------------------------" << endl;
             }
             else if (input != NULL){

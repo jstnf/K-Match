@@ -20,7 +20,7 @@ class menuSavedData : public handler {
             if(input == '2'){
                 cout << endl;
                 cout << "---------------------------------------------------------------" << endl;
-                
+                cout << "Saved Data: " << endl;
                 cout << "---------------------------------------------------------------" << endl;
             }
             else if (input != NULL){
