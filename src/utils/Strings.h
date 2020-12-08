@@ -1,6 +1,7 @@
 #ifndef __KMUTILS_H__
 #define __KMUTILS_H__
 
+#include <algorithm>
 #include <cstring>
 #include <string>
 #include <vector>
@@ -18,6 +19,12 @@ class Strings {
             current = strtok(NULL, separator.c_str());
         }
         return arr;
+    }
+
+    static std::string lower(const std::string str) {
+        std::string data = str;
+        std::transform(data.begin(), data.end(), data.begin(), [](unsigned char c){ return std::tolower(c); });
+        return data;
     }
 };
 
