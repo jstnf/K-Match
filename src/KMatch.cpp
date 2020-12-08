@@ -41,7 +41,7 @@ int KMatch::mainMenu() {
     menuEndProgram *endProgram = new menuEndProgram();
     while (menuInput != '0'){
         std::cout << "--------------------------------------------" << std::endl;
-        std::cout << "             Welcome to K-Match!" << std::endl;
+        std::cout << "            Welcome to K-Match!" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
         std::cout << "Type 1 to search for songs or artists" << std::endl;
         std::cout << "Type 2 to view your saved songs and artists" << std::endl;
