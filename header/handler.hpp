@@ -12,8 +12,8 @@ class handler : public mainMenu {
         handler *nextRequest;
     public: 
         handler(){nextRequest = NULL;}
+        virtual void setNextHandler(handler *nextHandler) = 0;
         virtual void handleRequest(char c) = 0;
-        void setNextHandler(handler *nextHandler){ nextRequest = nextHandler; }
 };
 
 

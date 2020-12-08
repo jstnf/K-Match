@@ -7,7 +7,7 @@ using namespace std;
 
 class mainMenu {
     private: 
-        char choice;
+        int choice;
     public:
         void display();
         void getInput();
