@@ -17,15 +17,41 @@ public class KMSpotifyGet {
     private final List<String> ignoredWords;
     private final SpotifyAPI api;
     private KMDatabase database;
+    private boolean databaseMode;
 
     public KMSpotifyGet() {
         ignoredWords = new ArrayList<>();
         api = new SpotifyAPI(this);
+        databaseMode = false;
     }
 
     public void start() {
         System.out.println("K-Match \"Spotify-Get\" Utility");
 
+        Scanner input = new Scanner(System.in);
+
+        boolean choiceMade = false;
+        String choice;
+        while (!choiceMade) {
+            System.out.println("Would you like to generate TSV files instead of uploading to a MySQL database? (y/n)");
+            System.out.println(" > ");
+            choice = input.nextLine();
+            switch (choice.toLowerCase()) {
+                case "y":
+                    doSpotifyAuth();
+                    break;
+                case "n":
+                    databaseMode = true;
+                    databaseModeStart();
+                    return;
+                default:
+                    System.out.println("Invalid choice! Please specify 'y' or 'n'.");
+                    break;
+            }
+        }
+    }
+
+    private void databaseModeStart() {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter database address: ");
         String dbAddress = input.nextLine();
@@ -35,6 +61,14 @@ public class KMSpotifyGet {
         String dbUser = input.nextLine();
         System.out.print("Enter database password: ");
         String dbPass = input.nextLine();
+
+        database = new KMDatabase(this, dbAddress, dbPort, dbUser, dbPass);
+        doDatabaseConnect();
+        doSpotifyAuth();
+    }
+
+    private void doSpotifyAuth() {
+        Scanner input = new Scanner(System.in);
         System.out.println("Enter Spotify playlist ids, separated by commas.");
         System.out.print(" > ");
         api.addPlaylistIds(input.nextLine().split(","));
@@ -42,11 +76,20 @@ public class KMSpotifyGet {
         System.out.print(" > ");
         ignoredWords.addAll(Arrays.asList(input.nextLine().split(",")));
 
-        database = new KMDatabase(this, dbAddress, dbPort, dbUser, dbPass);
+        System.out.println("Requesting Spotify authentication token... Redirecting you to browser!");
+        if (!api.requestAuthCode()) {
+            System.out.println("There was an error with the authentication request process. Please try again later.");
+        }
+    }
 
+    private void printInformation() {
         System.out.println("\nYour information:");
-        System.out.println("Database connection info:");
-        System.out.println(" - " + database.getUser() + "@" + database.getAddress() + ":" + database.getPort());
+        System.out.println("Database mode?: " + databaseMode);
+        if (databaseMode) {
+            System.out.println("Database connection info:");
+            System.out.println(" - " + database.getUser() + "@" + database.getAddress() + ":" + database.getPort());
+        }
+
         System.out.println("Spotify Playlist IDs:");
         for (String id : api.getPlaylistIds()) {
             System.out.println(" - " + id);
@@ -55,15 +98,9 @@ public class KMSpotifyGet {
         for (String word : ignoredWords) {
             System.out.println(" - " + word);
         }
-
-        try {
-            System.out.println("\nBeginning process in 5 seconds...");
-            Thread.sleep(5000);
-            connectAndAuthenticate();
-        } catch (Exception ignored) { }
     }
 
-    private void connectAndAuthenticate() {
+    private void doDatabaseConnect() {
         System.out.println("Attempting connection to SQL database...");
         if (database.init()) {
             System.out.println("Successfully connected to SQL database!");
@@ -116,10 +153,6 @@ public class KMSpotifyGet {
         }
 
         System.out.println("Successfully verified the K-Match database.");
-        System.out.println("Requesting Spotify authentication token... Redirecting you to browser!");
-        if (!api.requestAuthCode()) {
-            System.out.println("There was an error with the authentication request process. Please try again later.");
-        }
     }
 
     public void authFailed() {
@@ -134,8 +167,13 @@ public class KMSpotifyGet {
         }
 
         System.out.println("Successfully obtained Spotify authentication token.");
-        System.out.println("Proceeding to scrape entries and write to database...");
+        printInformation();
+        try {
+            System.out.println("\nBeginning process in 5 seconds...");
+            Thread.sleep(5000);
+        } catch (Exception ignored) { }
 
+        System.out.println("Proceeding to scrape entries and write information...");
         System.out.println("\nStaging playlists:");
         for (String id : api.getPlaylistIds()) {
             System.out.println("Requesting playlist information for playlist id " + id + "...");
@@ -162,9 +200,14 @@ public class KMSpotifyGet {
                 System.out.println("SCRAPE SUMMARY FOR PLAYLIST \"" + pair.getValue().getName() + "\":");
                 System.out.println("Obtained " + tracks.size() + " out of " + pair.getValue().getTracks().getTotal() + " expected tracks from the playlist!");
 
-                System.out.println("Beginning database upload of " + tracks.size() + " tracks...");
-                database.uploadTracks(tracks.toArray(new Track[0]));
-                System.out.println("Database upload completed.");
+                // Change behavior here based on database mode
+                if (databaseMode) {
+                    System.out.println("Beginning database upload of " + tracks.size() + " tracks...");
+                    database.uploadTracks(tracks.toArray(new Track[0]));
+                    System.out.println("Database upload completed.");
+                } else {
+
+                }
             }
 
             if (processed < api.getStagedPlaylists().size()) {
@@ -180,19 +223,17 @@ public class KMSpotifyGet {
 
     private void complete() {
         System.out.println("Process complete!");
-        System.out.println(database.getErrorTracks().size() + " tracks had errors being uploaded to the database.");
-        System.out.println("Dumping error track information below:");
-        for (Map.Entry<Track, Exception> pair : database.getErrorTracks().entrySet()) {
-            database.printTrack(pair.getKey());
-            System.out.println(pair.getValue().getClass().getName() + ": " + pair.getValue().getMessage());
+        if (databaseMode) {
+            System.out.println(database.getErrorTracks().size() + " tracks had errors being uploaded to the database.");
+            System.out.println("Dumping error track information below:");
+            for (Map.Entry<Track, Exception> pair : database.getErrorTracks().entrySet()) {
+                database.printTrack(pair.getKey());
+                System.out.println(pair.getValue().getClass().getName() + ": " + pair.getValue().getMessage());
+            }
         }
     }
 
     /* getset */
-    public KMDatabase getDatabase() {
-        return database;
-    }
-
     public List<String> getIgnoredWords() {
         return ignoredWords;
     }
