@@ -35,16 +35,14 @@ Our application will include three main displays - **search** for music in our d
 Our class diagram can be found on Google Drawings [**here**](https://docs.google.com/drawings/d/1TQYnSn7FgYnl15Sm2pPkMWSKl794P39TJgWWgG1dlOk/).
 
 ## Screenshots
- 
- 
  [**Example Input and Output with the Main Menu**](https://drive.google.com/file/d/1yLHeI__ZnOB-oYXIHFLWQxDeNWG9ApDc/view?usp=sharing)
  
 ## Installation/Usage
  > Instructions on installing and running your application
- 1) Download repository as zip
+ 1) Download repository as zip along with kmatch_files [**here**](https://drive.google.com/file/d/10wGPB69J7lD7MQI1f1WxnTzN_BR_sfcH/view?usp=sharing)
  2) Run cmake .
  4) Run make
- 5) Run the created kmatch.exe
+ 5) Run the created kmatch.exe with the files in kmatch_files in the same directory
  6) You are first prompted to enter a username to create a profile for you 
  7) You are then prompted with the main menu which you can navigate with the on screen prompts
 ## Testing
