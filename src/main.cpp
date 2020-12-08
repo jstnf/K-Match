@@ -1,7 +1,11 @@
 #include "KMatch.hpp"
 
 #include <iostream>
+
+// Platform checks
+#ifdef _WIN32
 #include <Windows.h>
+#endif
 
 int main() {
     std::cout << "Starting KMatch..." << std::endl;
@@ -12,6 +16,9 @@ int main() {
     }
 
     // For Windows console
+    #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
+    #endif
+    
     return kmatch.mainMenu();
 }
