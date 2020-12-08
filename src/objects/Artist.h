@@ -1,37 +1,11 @@
 #ifndef __ARTIST_H__
 #define __ARTIST_H__
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
+#include "KMObject.h"
 
-using namespace std;
-
-class Artist
-{
+class Artist : public KMObject {
   public:
-    Artist(string artistInfo)
-    {
-      stringstream artistStream(artistInfo);
-      artistStream >> artistID;
-      artistStream >> artistName;
-    }
-
-    string getArtistID()
-    {
-      return artistID;
-    }
-
-    string getArtistName()
-    {
-      return artistName;
-    }
-
-  private:
-    string artistID;
-    string artistName;
-    vector<Artist> vArtist;
+    Artist(std::string id, std::string name) : KMObject(id, name) { }
 };
 
 #endif
