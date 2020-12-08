@@ -9,9 +9,28 @@ ObjectManager::ObjectManager() {
 }
 
 ObjectManager::~ObjectManager() {
+    // Handle mem free of all loaded objects
+    auto itAlbums = albums->begin();
+    while (itAlbums != albums->end()) {
+        delete itAlbums->second;
+        itAlbums++;
+    }
     delete albums;
+
+    auto itArtists = artists->begin();
+    while (itArtists != artists->end()) {
+        delete itArtists->second;
+        itArtists++;
+    }
     delete artists;
+
+    auto itTracks = tracks->begin();
+    while (itTracks != tracks->end()) {
+        delete itTracks->second;
+        itTracks++;
+    }
     delete tracks;
+
     delete trackArtists;
     delete albumArtists;
 }
