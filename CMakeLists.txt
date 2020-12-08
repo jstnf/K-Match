@@ -3,6 +3,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_CXX_STANDARD 11)
 
-SET(SOURCE_FILES src/main.cpp src/ObjectManager.cpp)
+SET(SOURCE_FILES src/main.cpp src/ObjectManager.cpp src/io/ObjectLoader.cpp)
 
 ADD_EXECUTABLE(kmatch ${SOURCE_FILES})
