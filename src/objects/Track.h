@@ -1,26 +1,16 @@
 #ifndef __TRACK_H__
 #define __TRACK_H__
 
-#include <string>
+#include "KMObject.h"
 
-class Track {
+class Track : public KMObject {
   private:
-    const std::string id;
-    const std::string name;
     const std::string albumId;
     const int durationMs;
     const int popularity;
     
   public:
-    Track(std::string name, std::string albumId, int durationMs, int popularity) : name(name), albumId(albumId), durationMs(durationMs), popularity(popularity) { }
-
-    std::string getId() const {
-        return id;
-    }
-
-    std::string getName() const {
-        return name;
-    }
+    Track(std::string id, std::string name, std::string albumId, int durationMs, int popularity) : KMObject(id, name), albumId(albumId), durationMs(durationMs), popularity(popularity) { }
 
     std::string getAlbumId() const {
         return albumId;

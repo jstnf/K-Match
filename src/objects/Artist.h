@@ -1,23 +1,11 @@
 #ifndef __ARTIST_H__
 #define __ARTIST_H__
 
-#include <string>
+#include "KMObject.h"
 
-class Artist {
-  private:
-    const std::string id;
-    const std::string name;
-
+class Artist : public KMObject {
   public:
-    Artist(std::string id, std::string name) : id(id), name(name) { }
-
-    std::string getId() const {
-        return id;
-    }
-
-    std::string getName() const {
-        return name;
-    }
+    Artist(std::string id, std::string name) : KMObject(id, name) { }
 };
 
 #endif
