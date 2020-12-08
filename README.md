@@ -9,12 +9,9 @@
  * [**Microsoft Visual Studio Code**](https://code.visualstudio.com/)
    * IDE used by all project members
  * **C++**
+   * Using a command line main menu
    * The backend of the project
    * In-charge of multiple tasks, including rendering JavaScript, performing algorithms for recommendations, and interacting with an online database
- * **JavaScript**
-   * The frontend of the project (GUI)
-   * Display user and song information to the user of the application
-   * Contains buttons and elements that perform actions in the backend
  * **MySQL** (or other database, such as flatfile)
    * Stores all user information, including user's song lists, relationships between songs (we use these to create recommendations), and more
    * Contains songs grabbed from *Spotify* using Spotify's HTTP API
@@ -32,7 +29,7 @@ Our application will include three main displays - **search** for music in our d
  2) **Composite** -
 	     We chose the composite design pattern to have a song group as our main composite which will then contain leaves and other song groups that can hold more precise information of the recommended songs. Subclasses of the song group can contain information like the band name, release year, and even song length to the user. We will a have a client that can manipulate objects through the interface.
  3) **Chain of Responsibility** -
-	    We chose chain of responsibility design pattern to have the user's input be received by the correct object to perform the correct actions on their input. This would allow our user interface to have buttons presented to the user then depending on which button is pressed can be passed on to the correct receiver to deal with user's request. This design pattern simplifies the objects interconnections to one another by having objects only have a single reference to their succeeding receiver. 
+	    We chose chain of responsibility design pattern to have the user's input be received by the correct object to perform the correct actions on their input. This would allow our user interface to have multiple options presented to the user then depending on which input is chosen, can be passed on to the correct receiver to deal with user's request. This design pattern simplifies the objects interconnections to one another by having objects only have a single reference to their succeeding receiver. 
  
 ## Class Diagram
 Our class diagram can be found on Google Drawings [**here**](https://docs.google.com/drawings/d/1TQYnSn7FgYnl15Sm2pPkMWSKl794P39TJgWWgG1dlOk/).
