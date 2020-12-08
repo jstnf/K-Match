@@ -35,7 +35,11 @@ Our application will include three main displays - **search** for music in our d
 Our class diagram can be found on Google Drawings [**here**](https://docs.google.com/drawings/d/1TQYnSn7FgYnl15Sm2pPkMWSKl794P39TJgWWgG1dlOk/).
 
 ## Screenshots
- > Screenshots of the input/output after running your application
+ 
+ [**Main Menu of Program**](https://drive.google.com/file/d/1HLWjO673QmvN0JbGIIZo2CDR3ijdda4G/view?usp=sharing)
+ 
+ [**Example Input and Output**](https://drive.google.com/file/d/1yLHeI__ZnOB-oYXIHFLWQxDeNWG9ApDc/view?usp=sharing)
+ 
 ## Installation/Usage
  > Instructions on installing and running your application
  1) Download repository as zip
