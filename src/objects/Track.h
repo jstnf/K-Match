@@ -1,61 +1,28 @@
-#ifndef __TRACK_H
-#define __TRACK_H
+#ifndef __TRACK_H__
+#define __TRACK_H__
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
+#include "KMObject.h"
 
-using namespace std;
+class Track : public KMObject {
+  private:
+    const std::string albumId;
+    const int durationMs;
+    const int popularity;
+    
+  public:
+    Track(std::string id, std::string name, std::string albumId, int durationMs, int popularity) : KMObject(id, name), albumId(albumId), durationMs(durationMs), popularity(popularity) { }
 
-class Track
-{
-    private:
-        string trackID;
-        string trackName;
-        string trackAlbumID;
-        int trackDuration;
-        int trackPopularity;
+    std::string getAlbumId() const {
+        return albumId;
+    }
 
-    public:
-        //Default Constructor
-        Track(string trackInformation)
-        {
-            stringstream trackStream(trackInformation);
-            
-            trackStream >> trackID;
-            trackStream >> trackName;
-            trackStream >> trackAlbumID;
-            trackStream >> trackDuration;
-            trackStream >> trackPopularity;
-        } 
+    int getDurationMs() const {
+        return durationMs;
+    }
 
-        //Accessor Functions
-        string getTrackName() 
-        {
-            return trackName;
-        }
-
-        string getTrackAlbumID() 
-        {
-            return trackAlbumID;
-        }
-
-        string getTrackID()
-        {
-            return trackID;
-        }
-
-        int getTrackDuration() 
-        {
-            return trackDuration;
-        }
-
-        int getTrackPopularity() 
-        {
-            return trackPopularity;
-        }
-        
+    int getPopularity() const {
+        return popularity;
+    }
 };
 
 #endif

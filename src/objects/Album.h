@@ -1,46 +1,18 @@
 #ifndef __ALBUM_H__
 #define __ALBUM_H__
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <ctime>
+#include "KMObject.h"
 
-using namespace std;
-
-class Album
-{
+class Album : public KMObject {
   private:
-    vector<Album> vAlbum;
-    string albumID;
-    string albumName;
-    string albumRelease;
+    const std::string releaseDate;
 
   public:
-    Album(string albumInfo)
-    {
-      stringstream albumStream(albumInfo);
-      albumStream >> albumID;
-      albumStream >> albumName;
-      albumStream >> albumRelease;
-    }
+    Album(std::string id, std::string name, std::string releaseDate) : KMObject(id, name), releaseDate(releaseDate) { }
 
-    string getAlbumID()
-    {
-      return albumID;
-    }
-
-    string getAlbumName()
-    {
-      return albumName;
-    }
-
-    string getAlbumRelease()
-    {
-      return albumRelease;
+    std::string getReleaseDate() const {
+        return releaseDate;
     }
 };
 
 #endif
-
