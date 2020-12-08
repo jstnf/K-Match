@@ -13,7 +13,7 @@ class handler : public mainMenu {
     public: 
         handler(){nextRequest = NULL;}
         virtual void setNextHandler(handler *nextHandler) = 0;
-        virtual void handleRequest(char c) = 0;
+        virtual void handleRequest(char c) = 0; 
 };
 
 
