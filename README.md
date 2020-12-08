@@ -38,5 +38,11 @@ Our class diagram can be found on Google Drawings [**here**](https://docs.google
  > Screenshots of the input/output after running your application
 ## Installation/Usage
  > Instructions on installing and running your application
+ 1) Download repository as zip
+ 2) Run cmake .
+ 4) Run make
+ 5) Run the created kmatch.exe
+ 6) You are first prompted to enter a username to create a profile for you 
+ 7) You are then prompted with the main menu which you can navigate with the on screen prompts
 ## Testing
  > How was your project tested/validated? If you used CI, you should have a "build passing" badge in this README.
