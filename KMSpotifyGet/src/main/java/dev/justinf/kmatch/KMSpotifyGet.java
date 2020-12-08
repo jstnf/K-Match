@@ -33,7 +33,7 @@ public class KMSpotifyGet {
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("Would you like to generate TSV files instead of uploading to a MySQL database? (y/n)");
-            System.out.println(" > ");
+            System.out.print(" > ");
             String choice = input.nextLine();
             switch (choice.toLowerCase()) {
                 case "y":

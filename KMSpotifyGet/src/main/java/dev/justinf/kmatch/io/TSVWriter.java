@@ -93,7 +93,7 @@ public class TSVWriter {
 
                 for (ArtistSimplified aa : as.getArtists()) {
                     writeArtist(aa.getId(), aa.getName());
-                    writeAlbumArtist(aa.getId(), aa.getId());
+                    writeAlbumArtist(as.getId(), aa.getId());
                 }
 
                 writeTrack(t.getId(), t.getName(), as.getId(), t.getDurationMs(), t.getPopularity());
