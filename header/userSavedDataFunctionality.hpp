@@ -12,20 +12,7 @@ class menuSavedData : public handler {
     private:
         handler *nextHandler;
     public:
-        void setNextHandler(handler *request){
-            nextHandler = request;
-        }
-        void handleRequest(char c){
-            char input = c;
-            if(input == '2'){
-                cout << endl;
-                cout << "---------------------------------------------------------------" << endl;
-                cout << "Saved Data: " << endl;
-                cout << "---------------------------------------------------------------" << endl;
-            }
-            else if (input != NULL){
-                nextHandler->handleRequest(input);
-            }
-    }
+        void setNextHandler(handler *request);
+        void handleRequest(char c);
 };
 #endif
