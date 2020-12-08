@@ -1,9 +1,9 @@
 #ifndef __OBJECTMANAGER_H__
 #define __OBJECTMANAGER_H__
 
-#include "objects/Album.h"
-#include "objects/Artist.h"
-#include "objects/Track.h"
+#include "Album.h"
+#include "Artist.h"
+#include "Track.h"
 
 #include <unordered_map>
 #include <vector>
