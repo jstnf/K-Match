@@ -46,3 +46,6 @@ Our class diagram can be found on Google Drawings [**here**](https://docs.google
  7) You are then prompted with the main menu which you can navigate with the on screen prompts
 ## Testing
  > How was your project tested/validated? If you used CI, you should have a "build passing" badge in this README.
+
+# Footnote
+The Spotify App client secret was invalidated. Input your own ID and secret to use the Java Spotify-Get module.
